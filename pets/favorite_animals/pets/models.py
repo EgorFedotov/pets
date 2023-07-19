@@ -5,35 +5,42 @@ from pets.favorite_animals.users.validators import NameValidator
 
 User = get_user_model()
 
-PET_KIND_CHOICES = (
-    ("dog", "Dog"),
-    ("cat", "Cat"),
-    ("bird", "Bird"),
-)
-
 
 class Pet(models.Model):
-    """Модель для домашнего животного."""
-
+    """Модель домашнего животного."""
     owner = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
-        related_name='pet',
         verbose_name='домашнее животное',
-        help_text='домашнее животное'
+        help_text='домашнее животное',
+        related_name='pet',
+        on_delete=models.CASCADE,
     )
+
     name = models.CharField(
-        max_length=settings.LENGHT_USER_FIELD,
         verbose_name='Название',
         help_text='Название рецепта',
+        max_length=settings.LENGHT_USER_FIELD,
         validators=[NameValidator()]
     )
-    kind = models.CharField(max_length=10, choices=PET_KIND_CHOICES,)
-    photo = models.ImageField(
-        upload_to="pets/images/",
-        null=True,
-        default=None,
+
+    kind = models.CharField(
+        verbose_name='Вид домашнего животного',
+        help_text='Вид домашнего животного',
+        max_length=settings.LENGHT_USER_FIELD,
+        validators=[NameValidator()]
     )
+
+    photo = models.ImageField(
+        verbose_name='Фото питомца',
+        help_text='Фото питомца',
+        upload_to='pets/photo',
+        default=None
+    )
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Домашние животное'
+        verbose_name_plural = 'Домашние животные'
 
     def __str__(self):
         return self.name
