@@ -1,7 +1,13 @@
 from django.urls import path, include
+from rest_framework.routers import SimpleRouter
+
 from api.views import (PetListCreateView,
                        PetRetrieveUpdateDestroyView,
-                       UserRegistrationView,)
+                       UserViewSet)
+
+
+router = SimpleRouter()
+router.register('users', UserViewSet)
 
 urlpatterns = [
     path('pets/',
@@ -10,9 +16,8 @@ urlpatterns = [
     path('pets/<int:pk>/',
          PetRetrieveUpdateDestroyView.as_view(),
          name='pet-retrieve-update-destroy'),
-    path('users/',
-         UserRegistrationView.as_view(),
-         name='user-list'),
+
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path('', include(router.urls)),
 ]
