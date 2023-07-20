@@ -40,34 +40,3 @@ class UserSerializer(serializers.ModelSerializer):
         pets = Pet.objects.filter(owner=obj,)
         serializer = PetSerializer(pets, many=True,)
         return serializer.data
-
-
-class RegisterDataSerializer(serializers.Serializer):
-    '''Сериализатор регистрации.'''
-    username = serializers.CharField(
-        max_length=settings.LENGHT_USER_FIELD,
-        validators=[UnicodeUsernameValidator()]
-    )
-
-    email = serializers.EmailField(
-        max_length=254,
-    )
-
-    def validate(self, data):
-        user = User.objects.filter(
-            username=data.get('username')
-        )
-        email = User.objects.filter(
-            email=data.get('email')
-        )
-        if not user.exists() and email.exists():
-            raise ValidationError("Недопустимый Email и username")
-        if user.exists() and user.get().email != data.get('email'):
-            raise ValidationError("Недопустимый Email")
-        return data
-
-
-class TokenSerializer(serializers.Serializer):
-    '''Сериализатор для токена.'''
-    username = serializers.CharField()
-    confirmation_code = serializers.CharField()
