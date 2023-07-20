@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from pets.favorite_animals.users.validators import NameValidator
+from users.validators import NameValidator
 
 User = get_user_model()
 
