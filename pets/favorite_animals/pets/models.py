@@ -17,8 +17,8 @@ class Pet(models.Model):
     )
 
     name = models.CharField(
-        verbose_name='Название',
-        help_text='Название рецепта',
+        verbose_name='Имя животного',
+        help_text='Имя животного',
         max_length=settings.LENGHT_USER_FIELD,
         validators=[NameValidator()]
     )
